@@ -2,28 +2,48 @@
 
 A lightweight, single-user workspace for AI-assisted software development and automation across approved projects.
 
-## Product principles
-- Simple, responsive interface with minimal visual clutter.
-- Human approval before repository writes, pull requests, deployments, or external actions.
-- Isolated project workspaces; no direct production database access.
-- Provider-independent model adapter, starting with Gemini.
-- Keep core application footprint small; temporary build workspaces are managed separately.
+## Current milestone: Gemini task planning
 
-## Initial architecture
-- Frontend: lightweight HTML/CSS/JavaScript prototype (no frontend framework or runtime dependency yet).
-- Backend: FastAPI service.
-- Agent orchestration: Google ADK behind a coordinator interface (planned).
-- Model access: Gemini API through a server-side provider adapter (planned).
-- Persistence: PostgreSQL for projects, tasks, runs, and audit events (planned).
-- Repository access: GitHub integration with least-privilege permissions (planned).
-- Execution: isolated worker/container per approved task (planned).
+- FastAPI endpoint: `POST /api/v1/plans`.
+- Gemini generates a structured plan containing 10–20 specialist tasks.
+- Roles include coordinator, backend, frontend, database, security, QA, DevOps, research and GitHub.
+- The plan is returned with `awaiting_approval`; no code execution or repository mutation occurs.
+- The static frontend renders the proposed plan.
+- Gemini credentials are read from `GEMINI_API_KEY` for local development or AWS Systems Manager Parameter Store SecureString in hosted environments.
+- The model is configurable with `GEMINI_MODEL`; the initial default is `gemini-2.5-pro` and must be checked against the Google API project before use.
+
+## Run locally
+
+From `backend/`:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8001
+pytest
+```
+
+Serve the `frontend/` directory with any static web server. Set `window.KPMC_API_BASE_URL` to the backend URL before loading `app.js` when frontend and backend have different origins. Configure `CORS_ALLOWED_ORIGINS` on the backend to the exact frontend origin.
+
+## AWS credential configuration
+
+Set these backend environment variables:
+- `AWS_REGION` (default `us-east-2`)
+- `GEMINI_PARAMETER_NAME` (default `/kpmc-ai-command-centre/production/GEMINI_API_KEY`)
+- `GEMINI_MODEL` (default `gemini-2.5-pro`)
+- `CORS_ALLOWED_ORIGINS` (comma-separated exact origins)
+
+The backend IAM role needs `ssm:GetParameter` on only the named parameter and the required KMS decrypt permission if a customer-managed key is used. Do not put the Gemini key in frontend code or commit it.
 
 ## Safety boundaries
-- Never store API keys in frontend code or commit secrets.
-- Do not connect to Super Bajaar production infrastructure or databases.
-- No writes to a repository's default branch; work on feature branches and propose PRs.
-- No deployment or production mutation without explicit human approval.
-- Record task inputs, tool actions, outputs, and verification evidence.
 
-## Current status
-Initial UI and FastAPI health endpoint scaffold only. The task form is a placeholder; it does not yet create or execute tasks. No agents, model calls, repository automation, database integration, or deployment workflows are enabled.
+- No Super Bajaar production infrastructure or database access.
+- No default-branch repository writes.
+- No deployment or production mutation without explicit approval.
+- Planning is not execution; the current milestone does not run agents or modify repositories.
+- Record task inputs, actions, outputs and verification evidence as persistence is added.
+
+## Not yet implemented
+
+Database persistence, task history, approval actions, GitHub repository operations, isolated execution workers, multi-agent execution, deployment automation and CI verification.

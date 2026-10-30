@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     aws_region: str = "us-east-2"
     gemini_parameter_name: str = "/kpmc-ai-command-centre/production/GEMINI_API_KEY"
     gemini_api_key: str | None = None
-    gemini_model: str = "gemini-2.5-pro"
+    gemini_model: str = "gemini-4-argon"
     cors_allowed_origins: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

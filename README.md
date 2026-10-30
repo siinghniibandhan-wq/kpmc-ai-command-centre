@@ -10,7 +10,7 @@ A lightweight, single-user workspace for AI-assisted software development and au
 - The plan is returned with `awaiting_approval`; no code execution or repository mutation occurs.
 - The static frontend renders the proposed plan.
 - Gemini credentials are read from `GEMINI_API_KEY` for local development or AWS Systems Manager Parameter Store SecureString in hosted environments.
-- The model is configurable with `GEMINI_MODEL`; the initial default is `gemini-2.5-pro` and must be checked against the Google API project before use.
+- The default model is `gemini-4-argon`, configurable with `GEMINI_MODEL`. Confirm API access and billing for the Google project before live use.
 
 ## Run locally
 
@@ -31,7 +31,7 @@ Serve the `frontend/` directory with any static web server. Set `window.KPMC_API
 Set these backend environment variables:
 - `AWS_REGION` (default `us-east-2`)
 - `GEMINI_PARAMETER_NAME` (default `/kpmc-ai-command-centre/production/GEMINI_API_KEY`)
-- `GEMINI_MODEL` (default `gemini-2.5-pro`)
+- `GEMINI_MODEL` (default `gemini-4-argon`)
 - `CORS_ALLOWED_ORIGINS` (comma-separated exact origins)
 
 The backend IAM role needs `ssm:GetParameter` on only the named parameter and the required KMS decrypt permission if a customer-managed key is used. Do not put the Gemini key in frontend code or commit it.

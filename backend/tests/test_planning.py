@@ -21,7 +21,7 @@ def test_plan_rejects_duplicate_task_ids():
         expected_output="Repository inspection notes",
     )
     try:
-        TaskPlan(summary="A valid planning summary.", tasks=[task, task])
+        TaskPlan(summary="A valid planning summary.", tasks=[task] * 10)
     except ValueError as exc:
         assert "unique" in str(exc)
     else:

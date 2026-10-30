@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -20,14 +21,22 @@ def test_plan_rejects_duplicate_task_ids():
         description="Inspect the repository structure and identify relevant components.",
         expected_output="Repository inspection notes",
     )
-    try:
+    with pytest.raises(ValueError, match="unique"):
         TaskPlan(summary="A valid planning summary.", tasks=[task] * 10)
-    except ValueError as exc:
-        assert "unique" in str(exc)
-    else:
-        raise AssertionError("Duplicate task IDs must be rejected.")
 
 
 def test_plan_requires_ten_to_twenty_tasks():
-    response = client.post("/api/v1/plans", json={"task": "Fix the frontend task form"})
+    task = PlannedTask(
+        id="T01",
+        title="Inspect repository",
+        role="research",
+        description="Inspect the repository structure and identify relevant components.",
+        expected_output="Repository inspection notes",
+    )
+    with pytest.raises(ValueError):
+        TaskPlan(summary="A valid planning summary.", tasks=[task] * 9)
+
+
+def test_plan_endpoint_rejects_short_input():
+    response = client.post("/api/v1/plans", json={"task": "short"})
     assert response.status_code == 422

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8fc" />
+    <title>KPMC AI Command Centre</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#"><span class="brand-mark">K</span><span><strong>KPMC</strong><small>AI Command Centre</small></span></a>
+        <span class="system-state"><i></i> Workspace ready</span>
+      </header>
+      <section class="welcome">
+        <p class="eyebrow">PERSONAL WORKSPACE</p>
+        <h1>What are we building today?</h1>
+        <p class="subheading">Give one clear task. Your coordinator will plan the work and keep you in control.</p>
+        <form class="task-form" id="task-form">
+          <label class="sr-only" for="task-input">Describe a task</label>
+          <textarea id="task-input" rows="3" placeholder="Describe what you want to build, fix or investigate..." required></textarea>
+          <div class="task-form-footer"><span class="hint">No repository changes happen without your approval.</span><button type="submit">Create task <span aria-hidden="true">→</span></button></div>
+        </form>
+      </section>
+      <section class="section">
+        <div class="section-heading"><div><p class="eyebrow">OVERVIEW</p><h2>Workspace</h2></div><span class="muted">Initial setup</span></div>
+        <div class="overview-grid">
+          <article class="panel"><span class="panel-label">Projects</span><strong>0</strong><small>Connect a repository to begin</small></article>
+          <article class="panel"><span class="panel-label">Active tasks</span><strong>0</strong><small>No tasks running</small></article>
+          <article class="panel"><span class="panel-label">Agents</span><strong>0</strong><small>Coordinator setup pending</small></article>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-heading"><div><p class="eyebrow">NEXT STEP</p><h2>Set up your workspace</h2></div></div>
+        <div class="setup-list">
+          <div class="setup-item"><span class="step">1</span><div><strong>Connect GitHub</strong><small>Choose which repositories the workspace can access.</small></div><span class="status">Pending</span></div>
+          <div class="setup-item"><span class="step">2</span><div><strong>Configure Gemini</strong><small>Add the API key securely on the backend.</small></div><span class="status">Pending</span></div>
+          <div class="setup-item"><span class="step">3</span><div><strong>Enable the coordinator</strong><small>Plan tasks, request approvals and report evidence.</small></div><span class="status">Pending</span></div>
+        </div>
+      </section>
+      <footer>KPMC AI Command Centre <span>·</span> Early development</footer>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
